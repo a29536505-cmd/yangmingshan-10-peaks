@@ -1,33 +1,32 @@
 # 山行手帖｜2026年12月6日陽明山十連峰大縱走
 
-獨立的繁體中文手機網站，僅使用 `a29536505-cmd/yangmingshan-10-peaks` 專案。沒有操作其他旅行網站的檔案或部署設定。
+獨立的繁體中文手機網站，僅使用 `a29536505-cmd/yangmingshan-10-peaks`；未操作其他旅行網站的檔案或部署設定。
 
-**目前是可操作的開發草稿，路線查證尚未完成。不能用於現地導航。**
+## 已完成的網站功能
 
-## 已實作
+- Leaflet 手指拖曳、雙指縮放、按需定位及十峰地圖標記。
+- 十峰來源座標、文獻標高、介紹、實景照片與各自的作者／授權／來源。
+- **167 段有OSM way來源的命名步道／道路圖層**。包含支線，**不是官方全程GPX或已現勘的導航軌跡**；不以山峰直線冒充步道。
+- 山峰完成標記、篩選、本機瀏覽器儲存、裝備勾選、JSON紀錄匯出及需確認的進度重設。
+- 2026/12/6臺灣時間行程草案、休息與撤退決策、交通查詢、安全提醒及緊急電話。
+- 手機底部導覽、安全區域、鍵盤與對話框操作、列印版面。十張照片合計約1.60 MiB，延遲載入。
 
-- Leaflet 地圖拖曳、縮放及按需定位；OpenStreetMap 底圖需連線。
-- 十峰規劃清單、海拔候選值、介紹與完成進度。
-- 同裝置瀏覽器儲存、完成篩選、裝備勾選、紀錄 JSON 匯出及有確認步驟的進度重設。
-- 2026/12/6 臺灣時間行程草案、休息與撤退決策、交通查詢、安全提醒及緊急電話。
-- 手機底部導覽、鍵盤操作、對話框、iPhone 安全區域及列印版面。
+## 資料與未確認事項
 
-## 資料界線
+採用**傳統竹篙山版十連峰**。2019後官方拓印活動將「山」字柱移至雞心崙，兩者不可混用。
 
-山峰座標、實際步道、照片與海拔尚未完成來源核對。官方來源、照片來源及 GitHub API 在目前雲端環境遭網路代理以403擋下。
+資料查核日期：2026-10-24。十峰座標取自OSM來源節點；海拔使用文獻數值，介紹中列出與OSM標高的差異。相關資料在 `public/data/verified.json`，整體狀態為 `partial`，並非官方認證。
 
-- `src/data.js` 中的排序、海拔及時間表是**待核實草案**。
-- `public/data/verified.json` 保持 `pending`；目前沒有座標、軌跡或山峰照片。
-- 網站不會把山峰之間的直線當成步道，也不使用生成照片冒充山峰實景。
-- 頁首山稜圖是自行繪製且明示的意象插畫，不是地形圖或實景照片。
-- 不應直接套用其他網站的座標、GPX 或照片；先確認真實性、步道開放、照片對象、可重用授權與作者署名。
-- 交通候選路線與活動日班次尚未確認，不提供推測的首末班時間。
+- 官方網站查詢時顯示系統維護，未確認活動日步道開放、封閉與各段銜接。
+- 完整可靠GPX、實際距離／爬升、日出日落、隊伍體能與當日交通班次仍須行前核對。時間表為有長程經驗隊伍的草案，不是保證行程。
+- 十個頁面均有授權實景照片。**頂山目前使用頂山—石梯嶺路段照片，竹篙山為北側草原，向天山為周邊向天池，均標明非山頂近照**。照片不是活動日實況。
+- 本站底圖需網路，不能替代離線地圖、可靠軌跡與現地路標。
 
-詳細查證清單見 [DATA_VERIFICATION.md](DATA_VERIFICATION.md)。
+詳細資料與限制見 [DATA_VERIFICATION.md](DATA_VERIFICATION.md)；圖片與地圖授權見 [ATTRIBUTIONS.md](ATTRIBUTIONS.md)。
 
-## 本機開發
+## 開發與測試
 
-需要 Node.js 24、npm 及 Chromium。此雲端機器已提供 `/usr/bin/chromium`。
+需要Node.js 24、npm及Chromium。此雲端環境已提供 `/usr/bin/chromium`。
 
 ```sh
 cd /workspace/yangmingshan-10-peaks
@@ -35,26 +34,24 @@ npm ci --cache /workspace/.npm-cache
 npm run dev -- --port 5173
 ```
 
-本專案以 Vite 編譯、Leaflet 顯示地圖、Lucide 提供圖示，不需要 API 金鑰或後端。相對路徑 `base: './'` 支援 GitHub Pages 專案子目錄。
-
-## 驗證
-
 ```sh
 npm test
 npm run build
 npm run test:e2e
 ```
 
-端到端測試使用 Chromium 桌面與 iPhone 13 尺寸／觸控模擬，**不代表實體 iPhone 或 Safari 已測試**。測試刻意攔截第三方底圖，以驗證斷線提示與頁面功能；外部圖磚、真實地理資料與已發布網站須另做連線驗證。
+目前8項單元／資料測試及20項瀏覽器測試通過；瀏覽器測試為Chromium桌面與iPhone 13尺寸／觸控模擬，**非實體iPhone／Safari測試**。測試刻意攔截第三方底圖以驗證斷線提示；外部OSM圖磚另以保留TLS驗證的HTTP請求確認取得200及PNG內容。
 
-其他本機可設定 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`；GitHub Actions 設定 `CI=true` 並使用 Playwright 安裝的 Chromium。
+相對路徑 `base: './'` 支援GitHub Pages專案子目錄。無後端、無應用程式API金鑰。其他本機可指定 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`；CI使用Playwright安裝的Chromium。
+
+`scripts/optimize-images.mjs` 可在新增有授權照片後執行（`npm run optimize:images`），僅做手機用尺寸／JPEG壓縮；已達尺寸的檔案不會重複壓縮。來源與授權需一併更新。
 
 ## GitHub Pages
 
-`.github/workflows/pages.yml` 在 `main` 提交後執行單元測試、正式建置與瀏覽器測試，再部署 `dist`。
+`.github/workflows/pages.yml` 在 `main` 提交後完成安裝、8項資料測試、正式建置、20項瀏覽器測試，然後部署 `dist`。
 
-第一次需要在**此專案**的 Settings → Pages 將 Source 設為 **GitHub Actions**，或透過有管理權限的 GitHub API 設為 `build_type: workflow`。內建 `GITHUB_TOKEN` 不能替尚未開啟 Pages 的專案自動開啟此設定。
+**首次啟用Pages受到現有GitHub整合權限限制**：`POST /repos/a29536505-cmd/yangmingshan-10-peaks/pages` 回傳 `403 Resource not accessible by integration`。Git讀寫及Actions驗證已成功，不能將此錯誤誤判成缺少Git權限或要求重複token。
 
-完成啟用後，可在 Actions 手動執行 `Test and deploy to GitHub Pages`。此流程不設定自訂網域，也不變更任何其他專案的 Pages。
+請在**此專案**的Settings → Pages將Source選為 **GitHub Actions**。啟用後，在Actions重新執行 `Test and deploy to GitHub Pages`。流程不設定自訂網域，不變更其他專案Pages。
 
-預期網址是 `https://a29536505-cmd.github.io/yangmingshan-10-peaks/`；在實際部署成功與HTTP檢查前，不應將它描述為已發布。
+預期網址為 `https://a29536505-cmd.github.io/yangmingshan-10-peaks/`；實際部署成功與公開HTTP檢查前，不代表已發布。
