@@ -50,8 +50,10 @@ npm run test:e2e
 
 `.github/workflows/pages.yml` 在 `main` 提交後完成安裝、8項資料測試、正式建置、20項瀏覽器測試，然後部署 `dist`。
 
-**首次啟用Pages受到現有GitHub整合權限限制**：`POST /repos/a29536505-cmd/yangmingshan-10-peaks/pages` 回傳 `403 Resource not accessible by integration`。Git讀寫及Actions驗證已成功，不能將此錯誤誤判成缺少Git權限或要求重複token。
+此專案的Pages已啟用，Source為GitHub Actions。若重用到新專案，需先在該專案Settings → Pages選擇GitHub Actions。首次啟用需要Pages管理權限，不能將Pages設定權限與Git推送權限混為一談。
 
-請在**此專案**的Settings → Pages將Source選為 **GitHub Actions**。啟用後，在Actions重新執行 `Test and deploy to GitHub Pages`。流程不設定自訂網域，不變更其他專案Pages。
+流程不設定自訂網域，不變更其他專案Pages。網站地址：
 
-預期網址為 `https://a29536505-cmd.github.io/yangmingshan-10-peaks/`；實際部署成功與公開HTTP檢查前，不代表已發布。
+https://a29536505-cmd.github.io/yangmingshan-10-peaks/
+
+每次提交後，可在Actions確認 `Test and deploy to GitHub Pages` 的驗證與部署結果。

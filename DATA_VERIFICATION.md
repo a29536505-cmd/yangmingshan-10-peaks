@@ -40,6 +40,6 @@
 4. 大臺北公車小15／108／小6僅列候選服務，活動日班次、末班與停駛尚未確認，不提供推測的發車時間。
 5. 查看中央氣象署警報，完成結伴、留守、離線地圖及緊急應變計畫。
 
-## 發布限制
+## 發布範圍
 
-GitHub倉庫讀寫與雲端Actions測試可用；現有整合首次啟用Pages時回傳 `403 Resource not accessible by integration`。需要使用者在**這個專案**的Settings → Pages將Source設為GitHub Actions，然後重跑部署；未操作其他旅行網站。
+只部署 `a29536505-cmd/yangmingshan-10-peaks`，使用此專案的GitHub Actions與Pages；沒有更改其他旅行網站。此專案的Pages已啟用，後續由工作流程驗證並部署 `dist`。
